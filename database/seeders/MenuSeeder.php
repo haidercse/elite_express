@@ -9,12 +9,14 @@ class MenuSeeder extends Seeder
 {
     public function run(): void
     {
+        // ============================
+        // MENU MANAGEMENT
+        // ============================
         $menuGroup = DB::table('menu_groups')->insertGetId([
             'name' => 'Menu Management',
             'order' => 1
         ]);
 
-        // Parent Menu
         $menuParent = DB::table('menus')->insertGetId([
             'group_id' => $menuGroup,
             'title' => 'Menus',
@@ -23,7 +25,6 @@ class MenuSeeder extends Seeder
             'order' => 1
         ]);
 
-        // Submenus
         DB::table('menus')->insert([
             [
                 'parent_id' => $menuParent,
@@ -37,12 +38,14 @@ class MenuSeeder extends Seeder
                 'title' => 'Menu Group',
                 'route' => 'admin.menu-groups.index',
                 'permission' => 'menu.view',
-                'order' => 1
+                'order' => 2
             ],
-            
         ]);
 
 
+        // ============================
+        // ROLE MANAGEMENT
+        // ============================
         $roleGroup = DB::table('menu_groups')->insertGetId([
             'name' => 'Role Management',
             'order' => 2
@@ -64,9 +67,12 @@ class MenuSeeder extends Seeder
                 'permission' => 'role.view',
                 'order' => 1
             ],
-            
         ]);
 
+
+        // ============================
+        // PERMISSION MANAGEMENT
+        // ============================
         $permissionGroup = DB::table('menu_groups')->insertGetId([
             'name' => 'Permission Management',
             'order' => 3
@@ -88,7 +94,36 @@ class MenuSeeder extends Seeder
                 'permission' => 'permission.view',
                 'order' => 1
             ],
-          
+        ]);
+
+
+        // ============================
+        // USER MANAGEMENT 
+        // ============================
+        $userGroup = DB::table('menu_groups')->insertGetId([
+            'name' => 'User Management',
+            'order' => 4
+        ]);
+
+        // Parent menu
+        $userParent = DB::table('menus')->insertGetId([
+            'group_id' => $userGroup,
+            'title' => 'Users',
+            'icon' => 'ti-user',
+            'permission' => 'users.view',
+            'order' => 1
+        ]);
+
+        // Submenus
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $userParent,
+                'title' => 'User List',
+                'route' => 'admin.users.index',
+                'permission' => 'users.view',
+                'order' => 1
+            ],
+            
         ]);
     }
 }

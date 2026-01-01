@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\MenuGroupController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AuthController;
@@ -69,7 +70,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::post('/permissions/update/{id}', [PermissionController::class, 'updateAjax'])->name('permissions.update.ajax');
 
     Route::delete('/permissions/delete/{id}', [PermissionController::class, 'deleteAjax'])->name('permissions.delete.ajax');
-
+    
+    //user managemnet
+    Route::get('/user', [UserController::class, 'index'])->name('users.index');
+    Route::post('/store', [UserController::class, 'storeAjax'])->name('users.store');
+    Route::post('/update/{id}', [UserController::class, 'updateAjax'])->name('users.update');
+    Route::delete('/delete/{id}', [UserController::class, 'deleteAjax'])->name('users.delete');
 
 
     // Logout Route

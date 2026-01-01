@@ -16,6 +16,7 @@ class RolePermissionSeeder extends Seeder
             'Menu Management',
             'Role Management',
             'Permission Management',
+            'User Management',
         ];
 
         foreach ($groups as $group) {
@@ -41,6 +42,12 @@ class RolePermissionSeeder extends Seeder
                 'permission.create',
                 'permission.edit',
                 'permission.delete'
+            ],
+            'User Management' => [
+                'users.view',
+                'users.create',
+                'users.edit',
+                'users.delete'
             ]
         ];
 
