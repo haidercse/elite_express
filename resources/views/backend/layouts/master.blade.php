@@ -13,6 +13,14 @@
 </head>
 
 <body>
+    <div class="modal fade" id="dynamicProfileModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                {{-- AJAX content will load here --}}
+            </div>
+        </div>
+    </div>
+
     <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -43,6 +51,7 @@
     <!-- jquery latest version -->
 
     @include('backend.layouts.partials.scripts')
+    
     @stack('scripts')
 
 </body>

@@ -124,6 +124,7 @@ class MenuSeeder extends Seeder
                 'order' => 1
             ],
             
+            
         ]);
     }
 }

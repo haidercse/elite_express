@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status'
     ];
 
     /**
@@ -51,5 +52,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
-
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }

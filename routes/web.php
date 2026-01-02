@@ -70,12 +70,31 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::post('/permissions/update/{id}', [PermissionController::class, 'updateAjax'])->name('permissions.update.ajax');
 
     Route::delete('/permissions/delete/{id}', [PermissionController::class, 'deleteAjax'])->name('permissions.delete.ajax');
-    
-    //user managemnet
-    Route::get('/user', [UserController::class, 'index'])->name('users.index');
-    Route::post('/store', [UserController::class, 'storeAjax'])->name('users.store');
-    Route::post('/update/{id}', [UserController::class, 'updateAjax'])->name('users.update');
-    Route::delete('/delete/{id}', [UserController::class, 'deleteAjax'])->name('users.delete');
+
+
+    // User Management
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::post('/store', [UserController::class, 'storeAjax'])->name('users.store');
+        Route::post('/update/{id}', [UserController::class, 'updateAjax'])->name('users.update');
+        Route::delete('/delete/{id}', [UserController::class, 'deleteAjax'])->name('users.delete');
+
+        // User Profile Route
+        Route::get('/profile-modal/{id}', [UserController::class, 'profileModal'])
+            ->name('users.profile.modal');
+
+        // Edit Profile Modal
+        Route::get('profile-edit-modal/{id}', [UserController::class, 'profileEditModal'])
+            ->name('users.profile.edit.modal');
+
+        // Update Profile (AJAX)
+        Route::post('profile-update/{id}', [UserController::class, 'profileUpdate'])
+            ->name('users.profile.update');
+        // User List Route for AJAX Reload
+        Route::get('list', [UserController::class, 'list'])->name('users.list');
+
+    });
+
 
 
     // Logout Route

@@ -38,7 +38,15 @@
 <script src="{{ asset('admin/assets/js/scripts.js') }}"></script>
 
 <!-- ================= Init Scripts ================= -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Bootstrap 5 Bundle (Required for Tabs, Dropdowns, Modals, Collapse) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Sweet Alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Global helpers -->
+<script src="{{ asset('js/helpers.js') }}"></script>
 <script>
     $(document).ready(function() {
         // ✅ DataTable

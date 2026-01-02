@@ -47,7 +47,8 @@ class RolePermissionSeeder extends Seeder
                 'users.view',
                 'users.create',
                 'users.edit',
-                'users.delete'
+                'users.delete',
+                'users.view.profile'
             ]
         ];
 
