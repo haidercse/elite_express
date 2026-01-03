@@ -28,6 +28,9 @@
                     Delete
                 </button>
             @endcan
+            <button class="btn btn-sm btn-info seatMapBtn" data-id="{{ $trip->id }}">
+                Seat Map
+            </button>
         </td>
     </tr>
 @endforeach

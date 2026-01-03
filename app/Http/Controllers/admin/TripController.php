@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Seat;
 use App\Models\Trip;
 use App\Models\Route;
+use App\Models\TripSeatStatus;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -95,5 +97,32 @@ class TripController extends Controller
     {
         Trip::findOrFail($id)->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function seatMapping($id)
+    {
+        $trip = Trip::with('vehicle')->findOrFail($id);
+
+        // If mapping does not exist → auto generate
+        if (!TripSeatStatus::where('trip_id', $id)->exists()) {
+
+            $seats = Seat::where('vehicle_id', $trip->vehicle_id)->get();
+
+            foreach ($seats as $seat) {
+                TripSeatStatus::create([
+                    'trip_id' => $trip->id,
+                    'seat_id' => $seat->id,
+                    'status' => 'available',
+                    'fare' => $trip->base_fare * $seat->base_fare_multiplier,
+                ]);
+            }
+        }
+
+        // Now load mapping
+        $seats = TripSeatStatus::where('trip_id', $id)
+            ->with('seat')
+            ->get();
+
+        return view('backend.pages.trips.seat-mapping', compact('trip', 'seats'));
     }
 }

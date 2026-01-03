@@ -1,16 +1,16 @@
 @extends('backend.layouts.master')
 
-@section('title', 'Trips')
+@section('title', 'Seats')
 
 @section('admin-content')
     <div class="container-fluid">
 
         <div class="d-flex justify-content-between mb-3">
-            <h4>Trips</h4>
+            <h4>Seats</h4>
 
-            @can('trip.create')
+            @can('seat.create')
                 <button class="btn btn-primary" id="addBtn">
-                    <i class="fa fa-plus"></i> Add Trip
+                    <i class="fa fa-plus"></i> Add Seat
                 </button>
             @endcan
         </div>
@@ -20,19 +20,19 @@
                 <table class="table table-bordered" id="dataTable">
                     <thead>
                         <tr>
-                            <th>Trip Code</th>
-                            <th>Route</th>
                             <th>Vehicle</th>
-                            <th>Date</th>
-                            <th>Departure</th>
-                            <th>Arrival</th>
-                            <th>Fare</th>
-                            <th>Status</th>
+                            <th>Seat No</th>
+                            <th>Label</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Multiplier</th>
+                            <th>Row</th>
+                            <th>Col</th>
                             <th width="120">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="tripTableBody">
-                        @include('backend.pages.trips.partials.table', ['trips' => $trips])
+                    <tbody id="seatTableBody">
+                        @include('backend.pages.seats.partials.table', ['seats' => $seats])
                     </tbody>
                 </table>
             </div>
@@ -41,30 +41,18 @@
     </div>
 
     {{-- Modal --}}
-    <div class="modal fade" id="tripModal">
+    <div class="modal fade" id="seatModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="tripForm">
+                <form id="seatForm">
                     <div class="modal-header">
-                        <h5 class="modal-title">Trip</h5>
+                        <h5 class="modal-title">Seat</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body">
 
                         <input type="hidden" id="id">
-
-                        <div class="mb-3">
-                            <label>Route</label>
-                            <select id="route_id" class="form-control">
-                                <option value="">Select Route</option>
-                                @foreach ($routes as $route)
-                                    <option value="{{ $route->id }}">
-                                        {{ $route->from_city }} → {{ $route->to_city }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
 
                         <div class="mb-3">
                             <label>Vehicle</label>
@@ -79,32 +67,49 @@
                         </div>
 
                         <div class="mb-3">
-                            <label>Date</label>
-                            <input type="date" id="date" class="form-control">
+                            <label>Seat Number</label>
+                            <input type="text" id="seat_number" class="form-control">
                         </div>
 
                         <div class="mb-3">
-                            <label>Departure Time</label>
-                            <input type="time" id="departure_time" class="form-control">
+                            <label>Seat Label</label>
+                            <input type="text" id="seat_label" class="form-control">
                         </div>
 
                         <div class="mb-3">
-                            <label>Arrival Time</label>
-                            <input type="time" id="arrival_time" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Base Fare</label>
-                            <input type="number" id="base_fare" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Status</label>
-                            <select id="status" class="form-control">
-                                <option value="scheduled">Scheduled</option>
-                                <option value="cancelled">Cancelled</option>
-                                <option value="completed">Completed</option>
+                            <label>Seat Type</label>
+                            <select id="seat_type" class="form-control">
+                                <option value="front">Front</option>
+                                <option value="middle">Middle</option>
+                                <option value="back">Back</option>
+                                <option value="window">Window</option>
+                                <option value="aisle">Aisle</option>
+                                <option value="driver">Driver</option>
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Category</label>
+                            <select id="seat_category" class="form-control">
+                                <option value="vip">VIP</option>
+                                <option value="regular">Regular</option>
+                                <option value="economy">Economy</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Fare Multiplier</label>
+                            <input type="number" step="0.01" id="base_fare_multiplier" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Row</label>
+                            <input type="number" id="position_row" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Column</label>
+                            <input type="number" id="position_column" class="form-control">
                         </div>
 
                     </div>
@@ -124,34 +129,35 @@
     <script>
         // Add
         $(document).on('click', '#addBtn', function() {
-            $('#tripForm')[0].reset();
+            $('#seatForm')[0].reset();
             $('#id').val('');
-            $('#tripModal').modal('show');
+            $('#seatModal').modal('show');
         });
 
         // Save
-        $('#tripForm').submit(function(e) {
+        $('#seatForm').submit(function(e) {
             e.preventDefault();
 
             let id = $('#id').val();
             let url = id ?
-                `/admin/trips/update/${id}` :
-                `/admin/trips/store`;
+                `/admin/seats/update/${id}` :
+                `/admin/seats/store`;
 
             $.ajax({
                 url: url,
                 method: "POST",
                 data: {
-                    route_id: $('#route_id').val(),
                     vehicle_id: $('#vehicle_id').val(),
-                    date: $('#date').val(),
-                    departure_time: $('#departure_time').val(),
-                    arrival_time: $('#arrival_time').val(),
-                    base_fare: $('#base_fare').val(),
-                    status: $('#status').val(),
+                    seat_number: $('#seat_number').val(),
+                    seat_label: $('#seat_label').val(),
+                    seat_type: $('#seat_type').val(),
+                    seat_category: $('#seat_category').val(),
+                    base_fare_multiplier: $('#base_fare_multiplier').val(),
+                    position_row: $('#position_row').val(),
+                    position_column: $('#position_column').val(),
                 },
                 success: function() {
-                    $('#tripModal').modal('hide');
+                    $('#seatModal').modal('hide');
                     toastSuccess("Saved successfully!");
                     reloadTable();
                 },
@@ -165,17 +171,18 @@
         $(document).on('click', '.editBtn', function() {
             let id = $(this).data('id');
 
-            $.get(`/admin/trips/edit/${id}`, function(data) {
+            $.get(`/admin/seats/edit/${id}`, function(data) {
                 $('#id').val(data.id);
-                $('#route_id').val(data.route_id);
                 $('#vehicle_id').val(data.vehicle_id);
-                $('#date').val(data.date);
-                $('#departure_time').val(data.departure_time);
-                $('#arrival_time').val(data.arrival_time);
-                $('#base_fare').val(data.base_fare);
-                $('#status').val(data.status);
+                $('#seat_number').val(data.seat_number);
+                $('#seat_label').val(data.seat_label);
+                $('#seat_type').val(data.seat_type);
+                $('#seat_category').val(data.seat_category);
+                $('#base_fare_multiplier').val(data.base_fare_multiplier);
+                $('#position_row').val(data.position_row);
+                $('#position_column').val(data.position_column);
 
-                $('#tripModal').modal('show');
+                $('#seatModal').modal('show');
             });
         });
 
@@ -190,7 +197,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/admin/trips/delete/${id}`,
+                        url: `/admin/seats/delete/${id}`,
                         method: "DELETE",
                         success: function() {
                             toastSuccess("Deleted!");
@@ -200,15 +207,11 @@
                 }
             });
         });
-        // Seat Map
-        $(document).on('click', '.seatMapBtn', function() {
-            let id = $(this).data('id');
-            window.location.href = `/admin/trips/${id}/seats`;
-        });
+
         // Reload Table
         function reloadTable() {
-            $.get(`/admin/trips/list`, function(data) {
-                $('#tripTableBody').html(data);
+            $.get(`/admin/seats/list`, function(data) {
+                $('#seatTableBody').html(data);
             });
         }
     </script>

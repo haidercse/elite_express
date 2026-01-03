@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\MenuGroupController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\RouteController;
+use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\TripController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VehicleController;
@@ -209,8 +210,44 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         // List Reload (AJAX)
         Route::get('/list', [TripController::class, 'list'])
             ->name('list');
-    });
+        // ⭐ NEW: Trip Seat Mapping Page
+        Route::get('/{id}/seats', [TripController::class, 'seatMapping'])
+            ->name('seats.mapping');
 
+        // ⭐ NEW: Update Seat Status (AJAX)
+        Route::post('/seat-status/update/{id}', [TripController::class, 'updateSeatStatus'])
+            ->name('seat.status.update');
+
+    });
+    // ============================
+// SEAT MANAGEMENT
+// ============================
+    Route::prefix('seats')->name('seats.')->group(function () {
+
+        // Index Page
+        Route::get('/', [SeatController::class, 'index'])
+            ->name('index');
+
+        // Store (AJAX)
+        Route::post('/store', [SeatController::class, 'store'])
+            ->name('store');
+
+        // Edit Modal Data Load (AJAX)
+        Route::get('/edit/{id}', [SeatController::class, 'edit'])
+            ->name('edit');
+
+        // Update (AJAX)
+        Route::post('/update/{id}', [SeatController::class, 'update'])
+            ->name('update');
+
+        // Delete (AJAX)
+        Route::delete('/delete/{id}', [SeatController::class, 'destroy'])
+            ->name('delete');
+
+        // List Reload (AJAX)
+        Route::get('/list', [SeatController::class, 'list'])
+            ->name('list');
+    });
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
