@@ -139,86 +139,85 @@ class MenuSeeder extends Seeder
             'order' => 99
         ]);
 
-        // Menu Builder
-        $menuParent = DB::table('menus')->insertGetId([
+        // ============================
+// SETTINGS (BOTTOM)
+// ============================
+        $settingsGroup = DB::table('menu_groups')->insertGetId([
+            'name' => 'Settings',
+            'order' => 99
+        ]);
+
+        // Settings Parent
+        $settingsParent = DB::table('menus')->insertGetId([
             'group_id' => $settingsGroup,
-            'title' => 'Menu Builder',
-            'icon' => 'ti-menu',
-            'permission' => 'menu.view',
+            'title' => 'Settings',
+            'icon' => 'ti-settings',
+            'permission' => null,
             'order' => 1
         ]);
 
+        // Users (NO parent_id)
         DB::table('menus')->insert([
             [
-                'parent_id' => $menuParent,
-                'title' => 'Menu List',
-                'route' => 'admin.menus.index',
-                'permission' => 'menu.view',
-                'order' => 1
-            ],
-            [
-                'parent_id' => $menuParent,
-                'title' => 'Menu Groups',
-                'route' => 'admin.menu-groups.index',
-                'permission' => 'menu.view',
+                'group_id' => $settingsGroup,
+                'parent_id' => $settingsParent,
+                'title' => 'Users',
+                'icon' => 'ti-user',
+                'route' => 'admin.users.index',
+                'permission' => 'users.view',
                 'order' => 2
             ],
         ]);
 
         // Roles
-        $roleParent = DB::table('menus')->insertGetId([
-            'group_id' => $settingsGroup,
-            'title' => 'Roles',
-            'icon' => 'ti-lock',
-            'permission' => 'role.view',
-            'order' => 2
-        ]);
-
         DB::table('menus')->insert([
             [
-                'parent_id' => $roleParent,
-                'title' => 'Role List',
+                'group_id' => $settingsGroup,
+                'parent_id' => $settingsParent,
+                'title' => 'Roles',
+                'icon' => 'ti-lock',
                 'route' => 'admin.roles.index',
                 'permission' => 'role.view',
-                'order' => 1
+                'order' => 3
             ],
         ]);
 
         // Permissions
-        $permissionParent = DB::table('menus')->insertGetId([
-            'group_id' => $settingsGroup,
-            'title' => 'Permissions',
-            'icon' => 'ti-key',
-            'permission' => 'permission.view',
-            'order' => 3
-        ]);
-
         DB::table('menus')->insert([
             [
-                'parent_id' => $permissionParent,
-                'title' => 'Permissions List',
+                'group_id' => $settingsGroup,
+                'parent_id' => $settingsParent,
+                'title' => 'Permissions',
+                'icon' => 'ti-key',
                 'route' => 'admin.permissions.index',
                 'permission' => 'permission.view',
-                'order' => 1
+                'order' => 4
             ],
         ]);
 
-        // Users
-        $userParent = DB::table('menus')->insertGetId([
-            'group_id' => $settingsGroup,
-            'title' => 'Users',
-            'icon' => 'ti-user',
-            'permission' => 'users.view',
-            'order' => 4
-        ]);
-
+        // Menu Builder
         DB::table('menus')->insert([
             [
-                'parent_id' => $userParent,
-                'title' => 'User List',
-                'route' => 'admin.users.index',
-                'permission' => 'users.view',
-                'order' => 1
+                'group_id' => $settingsGroup,
+                'parent_id' => $settingsParent,
+                'title' => 'Menu Builder',
+                'icon' => 'ti-menu',
+                'route' => 'admin.menus.index',
+                'permission' => 'menu.view',
+                'order' => 5
+            ],
+        ]);
+
+        // Menu Groups
+        DB::table('menus')->insert([
+            [
+                'group_id' => $settingsGroup,
+                'parent_id' => $settingsParent,
+                'title' => 'Menu Groups',
+                'icon' => 'ti-layers',
+                'route' => 'admin.menu-groups.index',
+                'permission' => 'menu.view',
+                'order' => 6
             ],
         ]);
     }

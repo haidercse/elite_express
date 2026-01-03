@@ -6,6 +6,12 @@
         border-radius: 50%;
         object-fit: cover;
     }
+
+    .menu-inner {
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+        padding-bottom: 20px;
+    }
 </style>
 
 <div class="sidebar-menu">
@@ -83,3 +89,16 @@
     </div>
 </div>
 <!-- sidebar menu area end -->
+
+<script>
+    $(document).on('click', 'li > a', function() {
+        let parent = $(this).parent();
+
+        if (parent.find('ul').length > 0) {
+            let firstSub = parent.find('ul li a').first().attr('href');
+            if (firstSub && firstSub !== '#') {
+                window.location.href = firstSub;
+            }
+        }
+    });
+</script>
