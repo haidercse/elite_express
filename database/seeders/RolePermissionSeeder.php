@@ -49,7 +49,48 @@ class RolePermissionSeeder extends Seeder
                 'users.edit',
                 'users.delete',
                 'users.view.profile'
-            ]
+            ],
+            'Vehicle Type Management' => [
+                'vehicle-type.view',
+                'vehicle-type.create',
+                'vehicle-type.edit',
+                'vehicle-type.delete'
+            ],
+
+            'Vehicle Management' => [
+                'vehicle.view',
+                'vehicle.create',
+                'vehicle.edit',
+                'vehicle.delete'
+            ],
+
+            'Route Management' => [
+                'route.view',
+                'route.create',
+                'route.edit',
+                'route.delete'
+            ],
+
+            'Trip Management' => [
+                'trip.view',
+                'trip.create',
+                'trip.edit',
+                'trip.delete'
+            ],
+
+            'Seat Layout Management' => [
+                'seat.view',
+                'seat.create',
+                'seat.edit',
+                'seat.delete'
+            ],
+
+            'Booking Management' => [
+                'booking.view',
+                'booking.create',
+                'booking.edit',
+                'booking.delete'
+            ],
         ];
 
         foreach ($permissions as $group => $perms) {

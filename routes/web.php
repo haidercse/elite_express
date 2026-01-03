@@ -4,7 +4,11 @@ use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\MenuGroupController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\RouteController;
+use App\Http\Controllers\admin\TripController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\VehicleController;
+use App\Http\Controllers\admin\VehicleTypeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AuthController;
@@ -95,7 +99,117 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     });
 
+    // Vehicle Type Management
+    Route::prefix('vehicle-types')->group(function () {
 
+        Route::get('/', [VehicleTypeController::class, 'index'])
+            ->name('vehicle.types.index');
+
+        Route::post('/store', [VehicleTypeController::class, 'store'])
+            ->name('vehicle.types.store');
+
+        Route::get('/edit/{id}', [VehicleTypeController::class, 'edit'])
+            ->name('vehicle.types.edit');
+
+        Route::post('/update/{id}', [VehicleTypeController::class, 'update'])
+            ->name('vehicle.types.update');
+
+        Route::delete('/delete/{id}', [VehicleTypeController::class, 'destroy'])
+            ->name('vehicle.types.delete');
+
+        Route::get('/list', [VehicleTypeController::class, 'list'])
+            ->name('vehicle.types.list');
+    });
+
+    // ============================
+// VEHICLE MANAGEMENT
+// ============================
+    Route::prefix('vehicles')->name('vehicles.')->group(function () {
+
+        // Index Page
+        Route::get('/', [VehicleController::class, 'index'])
+            ->name('index');
+
+        // Store (AJAX)
+        Route::post('/store', [VehicleController::class, 'store'])
+            ->name('store');
+
+        // Edit Modal Data Load (AJAX)
+        Route::get('/edit/{id}', [VehicleController::class, 'edit'])
+            ->name('edit');
+
+        // Update (AJAX)
+        Route::post('/update/{id}', [VehicleController::class, 'update'])
+            ->name('update');
+
+        // Delete (AJAX)
+        Route::delete('/delete/{id}', [VehicleController::class, 'destroy'])
+            ->name('delete');
+
+        // List Reload (AJAX)
+        Route::get('/list', [VehicleController::class, 'list'])
+            ->name('list');
+    });
+
+    // ============================
+// ROUTE MANAGEMENT
+// ============================
+    Route::prefix('routes')->name('routes.')->group(function () {
+
+        // Index Page
+        Route::get('/', [RouteController::class, 'index'])
+            ->name('index');
+
+        // Store (AJAX)
+        Route::post('/store', [RouteController::class, 'store'])
+            ->name('store');
+
+        // Edit Modal Data Load (AJAX)
+        Route::get('/edit/{id}', [RouteController::class, 'edit'])
+            ->name('edit');
+
+        // Update (AJAX)
+        Route::post('/update/{id}', [RouteController::class, 'update'])
+            ->name('update');
+
+        // Delete (AJAX)
+        Route::delete('/delete/{id}', [RouteController::class, 'destroy'])
+            ->name('delete');
+
+        // List Reload (AJAX)
+        Route::get('/list', [RouteController::class, 'list'])
+            ->name('list');
+    });
+
+    // ============================
+// TRIP MANAGEMENT
+// ============================
+    Route::prefix('trips')->name('trips.')->group(function () {
+
+        // Index Page
+        Route::get('/', [TripController::class, 'index'])
+            ->name('index');
+
+        // Store (AJAX)
+        Route::post('/store', [TripController::class, 'store'])
+            ->name('store');
+
+        // Edit Modal Data Load (AJAX)
+        Route::get('/edit/{id}', [TripController::class, 'edit'])
+            ->name('edit');
+
+        // Update (AJAX)
+        Route::post('/update/{id}', [TripController::class, 'update'])
+            ->name('update');
+
+        // Delete (AJAX)
+        Route::delete('/delete/{id}', [TripController::class, 'destroy'])
+            ->name('delete');
+
+        // List Reload (AJAX)
+        Route::get('/list', [TripController::class, 'list'])
+            ->name('list');
+    });
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,12 +13,19 @@ return new class extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vehicle_type_id')->constrained()->cascadeOnDelete();
+
             $table->string('name');
             $table->string('plate_number')->unique();
             $table->integer('total_seats');
+
+            // Optional but recommended
+            $table->string('driver_name')->nullable();
+            $table->string('driver_phone')->nullable();
+            $table->string('photo')->nullable();
+            $table->text('notes')->nullable();
+
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
-
         });
     }
 

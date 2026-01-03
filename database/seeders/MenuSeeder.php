@@ -98,14 +98,13 @@ class MenuSeeder extends Seeder
 
 
         // ============================
-        // USER MANAGEMENT 
+        // USER MANAGEMENT
         // ============================
         $userGroup = DB::table('menu_groups')->insertGetId([
             'name' => 'User Management',
             'order' => 4
         ]);
 
-        // Parent menu
         $userParent = DB::table('menus')->insertGetId([
             'group_id' => $userGroup,
             'title' => 'Users',
@@ -114,7 +113,6 @@ class MenuSeeder extends Seeder
             'order' => 1
         ]);
 
-        // Submenus
         DB::table('menus')->insert([
             [
                 'parent_id' => $userParent,
@@ -123,8 +121,119 @@ class MenuSeeder extends Seeder
                 'permission' => 'users.view',
                 'order' => 1
             ],
-            
-            
+        ]);
+
+
+        // ============================
+        // TRANSPORT MANAGEMENT (NEW)
+        // ============================
+        $transportGroup = DB::table('menu_groups')->insertGetId([
+            'name' => 'Transport Management',
+            'order' => 5
+        ]);
+
+        // Parent menu
+        $vehicleTypeParent = DB::table('menus')->insertGetId([
+            'group_id' => $transportGroup,
+            'title' => 'Vehicle Types',
+            'icon' => 'ti-truck',
+            'permission' => 'vehicle-type.view',
+            'order' => 1
+        ]);
+
+        // Submenu
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $vehicleTypeParent,
+                'title' => 'Vehicle Type List',
+                'route' => 'admin.vehicle.types.index',
+                'permission' => 'vehicle-type.view',
+                'order' => 1
+            ],
+        ]);
+
+        // ============================
+// VEHICLE MANAGEMENT
+// ============================
+        $vehicleGroup = DB::table('menu_groups')->insertGetId([
+            'name' => 'Vehicle Management',
+            'order' => 6
+        ]);
+
+        // Parent menu
+        $vehicleParent = DB::table('menus')->insertGetId([
+            'group_id' => $vehicleGroup,
+            'title' => 'Vehicles',
+            'icon' => 'ti-truck',
+            'permission' => 'vehicle.view',
+            'order' => 1
+        ]);
+
+        // Submenu
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $vehicleParent,
+                'title' => 'Vehicle List',
+                'route' => 'admin.vehicles.index',
+                'permission' => 'vehicle.view',
+                'order' => 1
+            ],
+        ]);
+
+        // ============================
+// ROUTE MANAGEMENT
+// ============================
+        $routeGroup = DB::table('menu_groups')->insertGetId([
+            'name' => 'Route Management',
+            'order' => 7
+        ]);
+
+        // Parent menu
+        $routeParent = DB::table('menus')->insertGetId([
+            'group_id' => $routeGroup,
+            'title' => 'Routes',
+            'icon' => 'ti-direction',
+            'permission' => 'route.view',
+            'order' => 1
+        ]);
+
+        // Submenu
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $routeParent,
+                'title' => 'Route List',
+                'route' => 'admin.routes.index',
+                'permission' => 'route.view',
+                'order' => 1
+            ],
+        ]);
+
+        // ============================
+// TRIP MANAGEMENT
+// ============================
+        $tripGroup = DB::table('menu_groups')->insertGetId([
+            'name' => 'Trip Management',
+            'order' => 8
+        ]);
+
+        // Parent menu
+        $tripParent = DB::table('menus')->insertGetId([
+            'group_id' => $tripGroup,
+            'title' => 'Trips',
+            'icon' => 'ti-timer',
+            'permission' => 'trip.view',
+            'order' => 1
+        ]);
+
+        // Submenu
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $tripParent,
+                'title' => 'Trip List',
+                'route' => 'admin.trips.index',
+                'permission' => 'trip.view',
+                'order' => 1
+            ],
         ]);
     }
 }

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
+use Illuminate\Support\Str;
 
 class TripSeeder extends Seeder
 {
@@ -14,19 +14,32 @@ class TripSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-
-        for ($i = 1; $i <= 10; $i++) {
-            DB::table('trips')->insert([
-                'route_id' => rand(1, 2),
-                'vehicle_id' => rand(1, 5),
-                'date' => $faker->dateTimeBetween('now', '+7 days'),
-                'departure_time' => $faker->time('H:i'),
-                'arrival_time' => $faker->time('H:i'),
-                'base_fare' => rand(300, 600),
+        DB::table('trips')->insert([
+            [
+                'trip_code' => 'TRIP-' . now()->format('Ymd') . '-' . Str::random(4),
+                'route_id' => 1,
+                'vehicle_id' => 1,
+                'date' => now()->toDateString(),
+                'departure_time' => '08:00:00',
+                'arrival_time' => '12:00:00',
+                'base_fare' => 550,
                 'status' => 'scheduled',
-            ]);
-        }
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'trip_code' => 'TRIP-' . now()->format('Ymd') . '-' . Str::random(4),
+                'route_id' => 2,
+                'vehicle_id' => 2,
+                'date' => now()->toDateString(),
+                'departure_time' => '14:00:00',
+                'arrival_time' => '18:00:00',
+                'base_fare' => 550,
+                'status' => 'scheduled',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 
 }

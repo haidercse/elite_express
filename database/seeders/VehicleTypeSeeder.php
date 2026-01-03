@@ -14,9 +14,9 @@ class VehicleTypeSeeder extends Seeder
     public function run(): void
     {
         DB::table('vehicle_types')->insert([
-            ['name' => 'Hiace', 'code' => 'HIACE', 'description' => 'Standard Hiace'],
-            ['name' => 'Mini Micro', 'code' => 'MINI_MICRO', 'description' => 'Mini Microbus'],
-            ['name' => 'Bus', 'code' => 'BUS', 'description' => 'Full size bus'],
+            ['name' => 'Hiace', 'seat_count' => 14, 'status' => 1],
+            ['name' => 'Mini Micro', 'seat_count' => 8, 'status' => 1],
+            ['name' => 'Bus', 'seat_count' => 40, 'status' => 1],
         ]);
     }
 }

@@ -126,3 +126,11 @@ window.handleValidationErrors = function(xhr) {
         });
     }
 };
+///* ================================
+//   SETUP CSRF TOKEN FOR AJAX
+//================================ */
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});

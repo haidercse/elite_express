@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class VehicleType extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'seat_count',
+        'status'
+    ];
+
 }
