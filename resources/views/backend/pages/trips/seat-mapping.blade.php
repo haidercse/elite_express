@@ -144,14 +144,22 @@
 
         function updateSeatStatus(id, status) {
             $.ajax({
-                url: `/admin/trips/seat-status/update/${id}`,
+                url: "{{ url('admin/trips/seat-status/update') }}/" + id,
                 method: "POST",
                 data: {
-                    status
+                    status: status,
+                    _token: "{{ csrf_token() }}"
                 },
-                success: function() {
-                    toastSuccess("Seat updated!");
-                    location.reload();
+                success: function(res) {
+                    if (res.success) {
+                        toastSuccess(res.message);
+                        location.reload();
+                    } else {
+                        toastError("Failed to update seat");
+                    }
+                },
+                error: function() {
+                    toastError("Server error");
                 }
             });
         }

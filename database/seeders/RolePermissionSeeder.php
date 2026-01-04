@@ -17,6 +17,13 @@ class RolePermissionSeeder extends Seeder
             'Role Management',
             'Permission Management',
             'User Management',
+            'Vehicle Type Management',
+            'Vehicle Management',
+            'Route Management',
+            'Trip Management',
+            'Seat Layout Management',
+            'Booking Management',
+            'Trip Seat Mapping', // ⭐ NEW
         ];
 
         foreach ($groups as $group) {
@@ -31,18 +38,21 @@ class RolePermissionSeeder extends Seeder
                 'menu.edit',
                 'menu.delete'
             ],
+
             'Role Management' => [
                 'role.view',
                 'role.create',
                 'role.edit',
                 'role.delete'
             ],
+
             'Permission Management' => [
                 'permission.view',
                 'permission.create',
                 'permission.edit',
                 'permission.delete'
             ],
+
             'User Management' => [
                 'users.view',
                 'users.create',
@@ -50,6 +60,7 @@ class RolePermissionSeeder extends Seeder
                 'users.delete',
                 'users.view.profile'
             ],
+
             'Vehicle Type Management' => [
                 'vehicle-type.view',
                 'vehicle-type.create',
@@ -91,6 +102,12 @@ class RolePermissionSeeder extends Seeder
                 'booking.edit',
                 'booking.delete'
             ],
+
+            // ⭐ NEW: Trip Seat Mapping Permissions
+            'Trip Seat Mapping' => [
+                'trip-seat.view',
+                'trip-seat.update'
+            ],
         ];
 
         foreach ($permissions as $group => $perms) {
@@ -112,15 +129,19 @@ class RolePermissionSeeder extends Seeder
         // Super Admin gets all permissions
         $superAdmin->syncPermissions(Permission::all());
 
-        // Admin gets limited permissions
+        // Admin gets limited permissions + NEW seat mapping permissions
         $admin->givePermissionTo([
             'permission.view',
             'permission.create',
             'permission.edit',
-            'permission.delete'
+            'permission.delete',
+
+            // ⭐ NEW
+            'trip-seat.view',
+            'trip-seat.update',
         ]);
 
-        // Agent gets booking permissions only
+        // Agent gets booking permissions only (unchanged)
         $agent->givePermissionTo([
             'permission.view',
             'permission.create',

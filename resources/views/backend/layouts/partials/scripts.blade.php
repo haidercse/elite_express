@@ -4,7 +4,8 @@
 <script src="{{ asset('admin/assets/js/bootstrap.min.js') }}"></script>
 
 <!-- ================= DataTables ================= -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <!-- ================= Select2 ================= -->
@@ -24,50 +25,60 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+
 <script>
     zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+    ZC.LICENSE = [
+        "569d52cefae586f634c54f86dc99e6a9",
+        "ee6b7db5b51705a13dc2339db3edaf6d"
+    ];
 </script>
 
 <!-- ================= Summernote ================= -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
 
-<!-- ================= Custom Plugins & Scripts ================= -->
+<!-- ================= Custom Plugins ================= -->
 <script src="{{ asset('admin/assets/js/plugins.js') }}"></script>
 <script src="{{ asset('admin/assets/js/scripts.js') }}"></script>
 
-<!-- ================= Init Scripts ================= -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Bootstrap 5 Bundle (Required for Tabs, Dropdowns, Modals, Collapse) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Sweet Alert -->
+<!-- ================= Sweet Alert ================= -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Global helpers -->
+
+<!-- ================= Global helpers ================= -->
 <script src="{{ asset('js/helpers.js') }}"></script>
+
+<!-- ================= Init Scripts ================= -->
 <script>
-    $(document).ready(function() {
-        // ✅ DataTable
+$(document).ready(function () {
+
+    // ✅ DataTable SAFE INIT
+    if ($.fn.DataTable) {
         if ($.fn.DataTable.isDataTable('#dataTable')) {
             $('#dataTable').DataTable().destroy();
         }
-        $('#dataTable').DataTable();
 
-        // ✅ Select2
-        $('.select2').select2({
-            tags: true,
-            placeholder: 'Select or type a group name',
-            allowClear: true
+        $('#dataTable').DataTable({
+            pageLength: 25,
+            ordering: true,
+            responsive: true
         });
-        $(window).on('load', function() {
-            $('#menu li.mm-active').each(function() {
-                $(this).children('ul').addClass('mm-show');
-                $(this).children('a')
-                    .addClass('active')
-                    .attr('aria-expanded', 'true');
-            });
-        });
+    }
+
+    // ✅ Select2
+    $('.select2').select2({
+        tags: true,
+        placeholder: 'Select or type a group name',
+        allowClear: true
     });
+
+    // ✅ MetisMenu active fix
+    $('#menu li.mm-active').each(function () {
+        $(this).children('ul').addClass('mm-show');
+        $(this).children('a')
+            .addClass('active')
+            .attr('aria-expanded', 'true');
+    });
+
+});
 </script>

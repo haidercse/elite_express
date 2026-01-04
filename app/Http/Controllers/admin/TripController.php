@@ -99,6 +99,7 @@ class TripController extends Controller
         return response()->json(['success' => true]);
     }
 
+    // Seat Mapping Page
     public function seatMapping($id)
     {
         $trip = Trip::with('vehicle')->findOrFail($id);
@@ -118,11 +119,41 @@ class TripController extends Controller
             }
         }
 
-        // Now load mapping
+        // Load mapping
         $seats = TripSeatStatus::where('trip_id', $id)
             ->with('seat')
             ->get();
 
         return view('backend.pages.trips.seat-mapping', compact('trip', 'seats'));
+    }
+
+    // Update Seat Status (AJAX)
+    public function updateSeatStatus(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'status' => 'required|in:available,booked,reserved,blocked'
+            ]);
+
+            // Find seat mapping row
+            $seatMap = TripSeatStatus::findOrFail($id);
+
+            // Update status
+            $seatMap->status = $request->status;
+            $seatMap->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Seat status updated successfully',
+                'status' => $seatMap->status
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -130,18 +130,31 @@ class MenuSeeder extends Seeder
                 'order' => 1
             ],
         ]);
+        
+        // ⭐ ADD BOOKING MENU HERE
+        $bookingParent = DB::table('menus')->insertGetId([
+            'group_id' => $transportGroup,
+            'title' => 'Bookings',
+            'icon' => 'ti-ticket',
+            'permission' => 'booking.view',
+            'order' => 6
+        ]);
+
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $bookingParent,
+                'title' => 'Booking List',
+                'route' => 'admin.bookings.index',
+                'permission' => 'booking.view',
+                'order' => 1
+            ],
+        ]);
+
 
         // ============================
         // SETTINGS (BOTTOM)
         // ============================
-        $settingsGroup = DB::table('menu_groups')->insertGetId([
-            'name' => 'Settings',
-            'order' => 99
-        ]);
 
-        // ============================
-// SETTINGS (BOTTOM)
-// ============================
         $settingsGroup = DB::table('menu_groups')->insertGetId([
             'name' => 'Settings',
             'order' => 99

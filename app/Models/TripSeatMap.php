@@ -4,25 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class TripSeatMap extends Model
 {
     protected $fillable = [
-        'user_id',
         'trip_id',
         'seat_id',
-        'passenger_name',
-        'passenger_phone',
-        'fare',
-        'total_amount',
-        'status',
-        'payment_status',
-        'booking_code',
+        'status'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function trip()
     {

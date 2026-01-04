@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\BookingController;
 use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\MenuGroupController;
 use App\Http\Controllers\admin\PermissionController;
@@ -247,6 +248,44 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         // List Reload (AJAX)
         Route::get('/list', [SeatController::class, 'list'])
             ->name('list');
+    });
+
+    // ============================
+// BOOKING MANAGEMENT
+
+    Route::prefix('bookings')->name('bookings.')->group(function () {
+
+        // Index Page
+        Route::get('/', [BookingController::class, 'index'])
+            ->name('index');
+
+        // List Reload (AJAX)
+        Route::get('/list', [BookingController::class, 'list'])
+            ->name('list');
+
+        // Store (AJAX)
+        Route::post('/store', [BookingController::class, 'store'])
+            ->name('store');
+
+        // Edit Modal Load (AJAX)
+        Route::get('/edit/{id}', [BookingController::class, 'edit'])
+            ->name('edit');
+
+        // Update (AJAX)
+        Route::post('/update/{id}', [BookingController::class, 'update'])
+            ->name('update');
+
+        // Delete (AJAX)
+        Route::delete('/delete/{id}', [BookingController::class, 'destroy'])
+            ->name('delete');
+
+        // Seat List for Trip (AJAX)
+        Route::get('/seat-list/{tripId}', [BookingController::class, 'seatList'])
+            ->name('seat.list');
+
+        // Show Modal (AJAX)
+        Route::get('/show/{id}', [BookingController::class, 'show'])
+            ->name('show');
     });
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
