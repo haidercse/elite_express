@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\RouteController;
 use App\Http\Controllers\admin\SeatController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\TripController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VehicleController;
@@ -286,6 +287,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         // Show Modal (AJAX)
         Route::get('/show/{id}', [BookingController::class, 'show'])
             ->name('show');
+
+        // Cancel Booking Routes
+        Route::get('/cancel-info/{id}', [BookingController::class, 'cancelInfo'])->name('cancel.info');
+        Route::post('/cancel/{id}', [BookingController::class, 'cancel'])->name('cancel');
+    });
+
+    Route::prefix('settings')->name('settings.')->group(function () {
+
+        Route::get('/', [SettingController::class, 'index'])->name('index');
+        Route::post('/store', [SettingController::class, 'store'])->name('store');
+        // AJAX update single setting
+        Route::post('/update', [SettingController::class, 'update'])->name('update');
+
+        // (optional) AJAX list reload
+        Route::get('/list', [SettingController::class, 'list'])->name('list');
     });
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

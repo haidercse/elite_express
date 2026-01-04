@@ -214,4 +214,64 @@ class BookingController extends Controller
 
         return $code;
     }
+    //cancel info and cancel functions
+    public function cancelInfo($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $percent = setting('cancellation_fee_percent', 10);
+        $min = setting('cancellation_min_fee', 0);
+        $max = setting('cancellation_max_fee', 0);
+
+        $fee = ($booking->total_amount * $percent) / 100;
+
+        if ($min > 0 && $fee < $min)
+            $fee = $min;
+        if ($max > 0 && $fee > $max)
+            $fee = $max;
+
+        $refund = $booking->total_amount - $fee;
+
+        return response()->json([
+            'id' => $booking->id,
+            'total_amount' => $booking->total_amount,
+            'cancellation_fee' => $fee,
+            'refund_amount' => $refund,
+        ]);
+    }
+    public function cancel(Request $request, $id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $percent = setting('cancellation_fee_percent', 10);
+        $min = setting('cancellation_min_fee', 0);
+        $max = setting('cancellation_max_fee', 0);
+
+        $fee = ($booking->total_amount * $percent) / 100;
+
+        if ($min > 0 && $fee < $min)
+            $fee = $min;
+        if ($max > 0 && $fee > $max)
+            $fee = $max;
+
+        $refund = $booking->total_amount - $fee;
+
+        // Free seat
+        TripSeatStatus::where('trip_id', $booking->trip_id)
+            ->where('seat_id', $booking->seat_id)
+            ->update(['status' => 'available']);
+
+        // Update booking
+        $booking->update([
+            'status' => 'cancelled',
+            'payment_status' => 'refunded',
+            'cancellation_fee' => $fee,
+            'refund_amount' => $refund,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Booking cancelled successfully'
+        ]);
+    }
 }

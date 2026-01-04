@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             BookingSeatSeeder::class,
             PaymentSeeder::class,
             MenuSeeder::class,
+            SettingSeeder::class,
 
         ]);
     }

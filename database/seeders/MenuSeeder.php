@@ -130,7 +130,7 @@ class MenuSeeder extends Seeder
                 'order' => 1
             ],
         ]);
-        
+
         // ⭐ ADD BOOKING MENU HERE
         $bookingParent = DB::table('menus')->insertGetId([
             'group_id' => $transportGroup,
@@ -231,6 +231,18 @@ class MenuSeeder extends Seeder
                 'route' => 'admin.menu-groups.index',
                 'permission' => 'menu.view',
                 'order' => 6
+            ],
+        ]);
+        // System Settings (NEW)
+        DB::table('menus')->insert([
+            [
+                'group_id' => $settingsGroup,
+                'parent_id' => $settingsParent,
+                'title' => 'System Settings',
+                'icon' => 'ti-settings', // তুমি চাইলে ti-sliders বা ti-control-record নিতে পারো
+                'route' => 'admin.settings.index', // তোমার settings page route
+                'permission' => null, // চাইলে permission add করতে পারো
+                'order' => 1.5 // Users এর আগে দেখাতে চাইলে 1.5 দাও
             ],
         ]);
     }

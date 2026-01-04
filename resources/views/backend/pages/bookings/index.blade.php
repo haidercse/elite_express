@@ -41,6 +41,7 @@
     @include('backend.pages.bookings.partials.create-modal')
     @include('backend.pages.bookings.partials.show-modal')
     @include('backend.pages.bookings.partials.edit-modal')
+    @include('backend.pages.bookings.partials.cancel-modal')
 @endsection
 
 @push('scripts')
@@ -176,6 +177,38 @@
         // VIEW
         $(document).on('click', '.viewBookingBtn', function() {
             openBookingShowModal($(this).data('id'));
+        });
+
+        //cancel booking and refund
+
+        $(document).on('click', '.cancelBookingBtn', function() {
+            let id = $(this).data('id');
+
+            $.get(`/admin/bookings/cancel-info/${id}`, function(res) {
+
+                $('#cancel_booking_id').val(res.id);
+                $('#cancel_total').text(res.total_amount);
+                $('#cancel_fee').text(res.cancellation_fee);
+                $('#cancel_refund').text(res.refund_amount);
+
+                $('#bookingCancelModal').modal('show');
+            });
+        });
+
+        $(document).on('submit', '#bookingCancelForm', function(e) {
+            e.preventDefault();
+
+            let id = $('#cancel_booking_id').val();
+
+            $.post(`/admin/bookings/cancel/${id}`, $(this).serialize(), function(res) {
+                if (res.success) {
+                    toastSuccess(res.message);
+                    $('#bookingCancelModal').modal('hide');
+                    reloadBookingTable();
+                } else {
+                    toastError(res.message);
+                }
+            });
         });
 
         // ============================
