@@ -16,11 +16,8 @@
                 </button>
             </div>
             @include('backend.pages.settings.partials.add-modal')
-            <div class="card-body" id="bookingSettingsTable">
-                @include('backend.pages.settings.partials.booking-table', [
-                    'bookingSettings' => $bookingSettings,
-                ])
-            </div>
+            @include('backend.pages.settings.partials.booking-table', ['settings' => $settings])
+
         </div>
 
     </div>
@@ -88,15 +85,19 @@
         });
 
         // inline update submit (AJAX)
+
         $(document).on('submit', '.settingUpdateForm', function(e) {
             e.preventDefault();
 
             let form = $(this);
+            let formData = new FormData(form[0]);
 
             $.ajax({
                 url: "{{ route('admin.settings.update') }}",
                 method: "POST",
-                data: form.serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(res) {
                     if (res.success) {
                         Swal.fire({
@@ -105,12 +106,10 @@
                             timer: 1500,
                             showConfirmButton: false,
                         });
-                    } else {
-                        Swal.fire("Error", res.message ?? "Update failed", "error");
+
+                        // reload page or reload table
+                        location.reload();
                     }
-                },
-                error: function() {
-                    Swal.fire("Error", "Something went wrong", "error");
                 }
             });
         });

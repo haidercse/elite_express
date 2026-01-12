@@ -5,15 +5,15 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        // তুমি চাইলে group অনুযায়ী filter করতে পারো
-        $bookingSettings = Setting::where('group', 'booking')->get();
+        $settings = Setting::orderBy('group')->get();
 
-        return view('backend.pages.settings.index', compact('bookingSettings'));
+        return view('backend.pages.settings.index', compact('settings'));
     }
 
     public function list()
@@ -53,15 +53,39 @@ class SettingController extends Controller
     {
         $request->validate([
             'key' => 'required|string',
-            'value' => 'nullable',
+            'type' => 'required|string',
         ]);
 
         $setting = Setting::where('key', $request->key)->firstOrFail();
-        $setting->update(['value' => $request->value]);
+
+        // Handle image upload
+        if ($setting->type === 'image') {
+
+            if ($request->hasFile('value')) {
+
+                // delete old image
+                if ($setting->value && Storage::disk('public')->exists($setting->value)) {
+                    Storage::disk('public')->delete($setting->value);
+                }
+
+                // upload new image
+                $path = $request->file('value')->store('settings', 'public');
+
+                $setting->update([
+                    'value' => $path
+                ]);
+            }
+
+        } else {
+            // text or number
+            $setting->update([
+                'value' => $request->value
+            ]);
+        }
 
         return response()->json([
             'success' => true,
-            'message' => $setting->label . ' updated successfully',
+            'message' => $setting->label . ' updated successfully'
         ]);
     }
 }
